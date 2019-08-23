@@ -123,7 +123,7 @@ public class QRCodeUtil {
     public static String encode(String content, String logoPath, String destPath, boolean needCompress) throws Exception {
         BufferedImage image = QRCodeUtil.createImage(content, logoPath, needCompress);
         mkdirs(destPath);
-        String fileName = new Random().nextInt(99999999) + "." + FORMAT.toLowerCase();
+        String fileName = new Random().nextInt(999999999) + "." + FORMAT.toLowerCase();
         ImageIO.write(image, FORMAT, new File(destPath + "/" + fileName));
         return fileName;
     }

@@ -39,7 +39,7 @@ public class RSAUtils {
      * @return
      * @throws Exception
      */
-    public static String decryptData(String keyStr, String data, Boolean isPublicKey) throws Exception {
+    public  String decryptData(String keyStr, String data, Boolean isPublicKey) throws Exception {
         if (StringUtils.isEmpty(keyStr)) {
             return "";
         }
@@ -180,27 +180,28 @@ public class RSAUtils {
     public String  main(String message) {
         // 生成的一对key保存好
         try {
-            String fileName = "F:\\Work_Space\\JAVA DES\\Demo\\RSApubpriKeypair.txt";//String类型密匙文件路
+            String fileName = "F:\\Work_Space\\JAVA DES\\Demo\\RSApubKey.txt";
+            String fileName1 = "F:\\Work_Space\\JAVA DES\\Demo\\RSApriKey.txt";//String类型密匙文件路
             //得到私钥和公钥
             KeyPair keyPair = getRSAKey();
             RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
             FileOutputStream fos = new FileOutputStream(fileName,true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
+            FileOutputStream fos1 = new FileOutputStream(fileName1,true);
+            ObjectOutputStream oos1 = new ObjectOutputStream(fos1);
 
             String pubKey = encryptBASE64(publicKey.getEncoded());
             String priKey = encryptBASE64(privateKey.getEncoded());
-            /**
+
             System.out.println("公钥：" + pubKey);
             System.out.println("私钥：" + priKey);
-             */
-            String jiami = encryptData(pubKey, message, true);//公钥加密后的密文
 
-            oos.writeObject("PUB KEY:  ");
-            oos.writeObject(pubKey);
-            oos.writeObject("PRI KEY:  ");
-            oos.writeObject(priKey);
+            String jiami = encryptData(pubKey, message, true);//公钥加密后的密文
+            oos.writeObject(" "+pubKey+"\r\n");
+            oos1.writeObject(" "+priKey+"\r\n");
             oos.close();
+            oos1.close();
             // 测试
 
             System.out.println("明文：" + message);

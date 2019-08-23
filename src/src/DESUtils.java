@@ -4,6 +4,7 @@ import javax.crypto.KeyGenerator;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
+import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.security.Key;
 import java.security.SecureRandom;
@@ -18,17 +19,21 @@ public class DESUtils {
     static {
         try {
             String fileName1 = "F:\\Work_Space\\JAVA DES\\Demo\\DESkey.txt";//String类型密匙文件路径
+            String fileName = "F:\\Work_Space\\JAVA DES\\Demo\\DesKey.xml";
             //将DES的密匙用RSA加密
             SecureRandom sr = new SecureRandom();
             KeyGenerator generator = KeyGenerator.getInstance("DES");
             generator.init(sr);
+            FileOutputStream fos = new FileOutputStream(fileName);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
             FileOutputStream fos1 = new FileOutputStream(fileName1,true);
             ObjectOutputStream oos1 = new ObjectOutputStream(fos1);
             // 生成密钥
             key = generator.generateKey();//用于DES加密的原密匙
             codedKey=RSA.main(key.toString());
-            oos1.writeObject(codedKey);//此处存放着RSA加密后的DES密匙（RSA公钥密文）
-            oos1.writeObject("NEXT KEY IS:\n");
+            oos.writeObject(key);
+            oos.close();
+            oos1.writeObject(" "+codedKey+"\r\n");//此处存放着RSA加密后的DES密匙（RSA公钥密文）
             oos1.close();
             generator = null;
         } catch (Exception e) {
@@ -41,17 +46,20 @@ public class DESUtils {
      * 获取key
      * @return
      */
-    public static Key getKey() {
+    public Key getKey() {
         Key kp = null;
         try {
             // 相对路径 需要新建 conf 文件夹
-            // String fileName = "conf/DesKey.xml";
-            // InputStream is = Encrypt.class.getClassLoader().getResourceAsStream(fileName);
+            String fileName = "F:\\Work_Space\\JAVA DES\\Demo\\DesKey.xml";
+            FileInputStream is = new FileInputStream(fileName);
+            ObjectInputStream oos = new ObjectInputStream(is);
+            kp = (Key) oos.readObject();
+            oos.close();
             // 绝对路径
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return key;
+        return kp;
     }
 
     /**
@@ -59,10 +67,10 @@ public class DESUtils {
      * @param str
      * @return
      */
-    public static String getEncryptString(String str) throws Exception {
+    public static String getEncryptString(String str,Key key) throws Exception {
         byte[] strBytes = str.getBytes("UTF-8");
         Cipher cipher = Cipher.getInstance("DES");
-        cipher.init(Cipher.ENCRYPT_MODE, getKey());
+        cipher.init(Cipher.ENCRYPT_MODE, key);
         byte[] encryptStrBytes = cipher.doFinal(strBytes);
         return Base64.getEncoder().encodeToString(encryptStrBytes);
     }
@@ -72,22 +80,25 @@ public class DESUtils {
      * @param str
      * @return
      */
-    public static String getDecryptString(String str) throws Exception {
+    public  String getDecryptString(String str,Key key) throws Exception {
         byte[] strBytes = Base64.getDecoder().decode(str);
         Cipher cipher = Cipher.getInstance("DES");
-        cipher.init(Cipher.DECRYPT_MODE,  getKey());
+        cipher.init(Cipher.DECRYPT_MODE, key);
         byte[] encryptStrBytes = cipher.doFinal(strBytes);
         return new String(encryptStrBytes, "UTF-8");
     }
     public String[] get_encryname_key_pair(String name)throws Exception{
-        String[] list = {getEncryptString(name),codedKey};
+        String[] list = {getEncryptString(name,key),codedKey};
         return list;
     }
 
-    public void main(String name) throws Exception {
+    public RSAUtils main() {
+        /**
         String encryname = getEncryptString(name);
         System.out.println("加密：" + encryname);
         System.out.println("解密：" + getDecryptString(encryname));
+         */
+        return RSA;
     }
 
 }

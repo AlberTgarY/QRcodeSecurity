@@ -29,4 +29,4 @@ https://github.com/zxing/zxing/releases
 
 密码：942694zyc
 
-2019-8-27 Albert 16:44
+2019-8-27  16:44 Prod By Albert

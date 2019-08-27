@@ -7,7 +7,7 @@
 若输入伪造二维码信息导致解密失败，则此二维码信息证伪，产品为赝品.
 
 使用时请检查文件路径是否正确并在Verify.java文件内进行操作.
-2019-8-27 Albert 16:44
+
 
 # 参考链接：
 https://blog.csdn.net/wangnan537/article/details/50353174
@@ -17,3 +17,5 @@ https://www.cnblogs.com/gisblogs/p/5082344.html
 https://www.cnblogs.com/caizhaokai/p/10944667.html
 
 https://github.com/zxing/zxing/releases
+
+2019-8-27 Albert 16:44

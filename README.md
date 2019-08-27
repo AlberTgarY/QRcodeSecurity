@@ -27,5 +27,6 @@ https://github.com/zxing/zxing/releases
 
 提取码：nn3z 
 
+密码：942694zyc
 
 2019-8-27 Albert 16:44

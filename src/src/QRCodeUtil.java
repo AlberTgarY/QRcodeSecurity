@@ -277,6 +277,13 @@ public class QRCodeUtil {
         return QRCodeUtil.decode(new File("F:\\Work_Space\\JAVA DES\\Gen\\"+filename));
     }
 
+    /**
+     * 生成二维码，在此修改二维码中心图片路径以及储存路径.
+     * @param text 二维码内容
+     * @param needCompress 是否压缩图片
+     * @return String 文件名.
+     * @throws Exception
+     */
 
     public String main(String text,boolean needCompress) throws Exception {
         //不含Logo

@@ -1,104 +1,150 @@
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
+import javax.crypto.SecretKey;
+import java.io.*;
 import java.security.Key;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.HashMap;
+
 
 
 public class DESUtils {
     private static RSAUtils RSA = new RSAUtils();
-    private static Key key;
-    private static String codedKey;
-    static {
-        try {
-            String fileName1 = "F:\\Work_Space\\JAVA DES\\Demo\\DESkey.txt";//String类型密匙文件路径
-            String fileName = "F:\\Work_Space\\JAVA DES\\Demo\\DesKey.xml";
-            //将DES的密匙用RSA加密
-            SecureRandom sr = new SecureRandom();
-            KeyGenerator generator = KeyGenerator.getInstance("DES");
-            generator.init(sr);
-            FileOutputStream fos = new FileOutputStream(fileName);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            FileOutputStream fos1 = new FileOutputStream(fileName1,true);
-            ObjectOutputStream oos1 = new ObjectOutputStream(fos1);
-            // 生成密钥
-            key = generator.generateKey();//用于DES加密的原密匙
-            codedKey=RSA.main(key.toString());
-            oos.writeObject(key);
-            oos.close();
-            oos1.writeObject(" "+codedKey+"\r\n");//此处存放着RSA加密后的DES密匙（RSA公钥密文）
-            oos1.close();
-            generator = null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private SecretKey securekey;
+    private String key;
+    private String codedKey;
+    /**
+     * 对字符串进行BASE64Decoder
+     *
+     * @param key
+     * @return
+     * @throws Exception
+     */
+    private byte[] decryptBASE64(String key) {
+        return Base64.getDecoder().decode(key);
     }
 
+    /**
+     * 对字节数组进行BASE64Encoder
+     *
+     * @param key
+     * @return
+     * @throws Exception
+     */
+    private String encryptBASE64(byte[] key) {
+        return Base64.getEncoder().encodeToString(key);
+    }
 
     /**
      * 获取key
      * @return
      */
-    public Key getKey() {
-        Key kp = null;
+    public String getKey(){
         try {
-            // 相对路径 需要新建 conf 文件夹
-            String fileName = "F:\\Work_Space\\JAVA DES\\Demo\\DesKey.xml";
-            FileInputStream is = new FileInputStream(fileName);
-            ObjectInputStream oos = new ObjectInputStream(is);
-            kp = (Key) oos.readObject();
-            oos.close();
-            // 绝对路径
+
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("DES");
+            keyGenerator.init(56);
+            // 生成一个Key
+            securekey = keyGenerator.generateKey();
+            // 转变为字节数组
+            byte[] encoded = securekey.getEncoded();
+            // 生成密钥字符串
+            String encodeString = encryptBASE64(encoded);
+            return encodeString;
         } catch (Exception e) {
             e.printStackTrace();
+            return "密钥生成错误.";
         }
-        return kp;
     }
-
     /**
      * 加密，返回BASE64的加密字符串
-     * @param str
+     * @param str,key 当key是String类型时使用
      * @return
      */
-    public static String getEncryptString(String str,Key key) throws Exception {
+    public  String getEncryptString(String str,String key) throws Exception {
+        DESKeySpec desKey = new DESKeySpec(key.getBytes());
+        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
+        securekey = keyFactory.generateSecret(desKey);
+        byte[] strBytes = str.getBytes("UTF-8");
+        Cipher cipher = Cipher.getInstance("DES");
+        cipher.init(Cipher.ENCRYPT_MODE, securekey);
+        byte[] encryptStrBytes = cipher.doFinal(strBytes);
+        return encryptBASE64(encryptStrBytes);
+    }
+    /**
+     * 加密，返回BASE64的加密字符串
+     * @param str,key 当key是SecretKey类型时使用
+     * @return
+     */
+    public  String getEncryptString(String str,SecretKey key) throws Exception {
         byte[] strBytes = str.getBytes("UTF-8");
         Cipher cipher = Cipher.getInstance("DES");
         cipher.init(Cipher.ENCRYPT_MODE, key);
         byte[] encryptStrBytes = cipher.doFinal(strBytes);
-        return Base64.getEncoder().encodeToString(encryptStrBytes);
+        return encryptBASE64(encryptStrBytes);
     }
+
 
     /**
      * 对BASE64加密字符串进行解密
      * @param str
      * @return
      */
-    public  String getDecryptString(String str,Key key) throws Exception {
-        byte[] strBytes = Base64.getDecoder().decode(str);
+    public  String getDecryptString(String str,String key) throws Exception {
+        DESKeySpec desKey = new DESKeySpec(key.getBytes());
+        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
+        securekey = keyFactory.generateSecret(desKey);
+        byte[] strBytes = decryptBASE64(str);
         Cipher cipher = Cipher.getInstance("DES");
-        cipher.init(Cipher.DECRYPT_MODE, key);
+        cipher.init(Cipher.DECRYPT_MODE, securekey);
         byte[] encryptStrBytes = cipher.doFinal(strBytes);
         return new String(encryptStrBytes, "UTF-8");
     }
+
+    /**
+     * 得到DES加密后的密文，以及经过RSA加密后的DES密匙.
+     * @param name
+     * @return String[] 储存密文以及加密后的密匙.
+     * @throws Exception
+     */
     public String[] get_encryname_key_pair(String name)throws Exception{
         String[] list = {getEncryptString(name,key),codedKey};
         return list;
     }
 
-    public RSAUtils main() {
-        /**
-        String encryname = getEncryptString(name);
-        System.out.println("加密：" + encryname);
-        System.out.println("解密：" + getDecryptString(encryname));
-         */
-        return RSA;
+    /**
+     * main()是DESUtils的主要单元，负责加密DES密匙，生成DES密匙，并写入相应的txt文件内方便验证时提取。
+     * @param
+     * @return
+     */
+    public void main() {
+            try {
+               //String类型密匙文件路径
+                String fileName = "F:\\Work_Space\\JAVA DES\\Demo\\DesKey.txt";
+                //根据文件路径读取文件
+                FileOutputStream fos = new FileOutputStream(fileName,true);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                // 生成密钥
+                key = getKey();//用于DES加密的原密匙
+                /*测试
+                String jiami = getEncryptString("Hello World!",key);
+                String jiami1 = getEncryptString("Hello World!",securekey);
+                System.out.println("密匙:" + key);
+                System.out.println("加密后：" + jiami+"以及"+jiami1);
+                String jiemi = getDecryptString(jiami,key);
+                System.out.println("解密后：" + jiemi);
+                System.out.println("--------------------------------------------------------------");
+                 */
+                codedKey=RSA.main(key);
+                oos.writeObject(key+"\r\n");
+                oos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 
 }

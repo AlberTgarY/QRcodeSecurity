@@ -3,27 +3,29 @@ import java.io.ObjectInputStream;
 
 public class Crypt {
     DESUtils DES = new DESUtils();
-    RSAUtils RSA = DES.main();
     QRCodeUtil QRCode = new QRCodeUtil();
 
     public Crypt() {
-
+        DES.main();
     }
 
     public String  crypt() {
         try {
-            System.out.println("-----------------------------------------------------------------------------");
+            System.out.println("---------------------------正在生成二维码-------------------------------------");
             //String filename= QRCode.main("Hd!", true);//生成明文二维码
             //System.out.println("明文二维码已经生成！");
             //String text = QRCode.decode(filename);//提取明文
-            String text = "Hello World!";
+            /**
+             * 请在此处修改您想要生成二维码的信息.
+             */
+            String text = "货真价实zyc";
             System.out.println("-----------------------------------------------------------------------------");
             String encryname = DES.get_encryname_key_pair(text)[0];
             String key = DES.get_encryname_key_pair(text)[1];
             //得到加密明文
             System.out.println("加密明文:"+encryname);
             System.out.println("DES密匙:"+key);
-            QRCode.main("内容:"+encryname+"\n加密DES密匙:"+key, true);//生成加密二维码
+            QRCode.main(encryname+"\r\n"+key, true);//生成加密二维码
             System.out.println("加密二维码已经生成！");
             System.out.println("-----------------------------------------------------------------------------");
             return encryname;
@@ -33,9 +35,7 @@ public class Crypt {
         }
         return null;
      }
-    public Object[] main(){
-        String text = crypt();
-        Object[] list ={DES,RSA,text,QRCode};
-        return list;
+    public void main(){
+        crypt();
     }
 }

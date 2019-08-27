@@ -115,7 +115,7 @@ public class RSAUtils {
      * @throws Exception
      */
     private static RSAPublicKey getPublicKey(String key) throws Exception {
-        byte[] keyBytes = Base64.getDecoder().decode(key);
+        byte[] keyBytes = decryptBASE64(key);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return (RSAPublicKey) keyFactory.generatePublic(keySpec);
@@ -129,7 +129,7 @@ public class RSAUtils {
      * @throws Exception
      */
     private static RSAPrivateKey getPrivateKey(String key) throws Exception {
-        byte[] keyBytes = Base64.getDecoder().decode(key);
+        byte[] keyBytes = decryptBASE64(key);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
@@ -177,35 +177,39 @@ public class RSAUtils {
         return Base64.getEncoder().encodeToString(key);
     }
 
+    /**
+     * main()是RSAUtils的主要单元，负责加密DES密匙，生成公钥/私钥，并写入相应的txt文件内方便验证时提取。
+     * @param message 想要加密的文本.
+     * @return 加密后的DES密匙(RSA公钥密文)
+     */
     public String  main(String message) {
-        // 生成的一对key保存好
         try {
+            //String类型密匙文件路径
             String fileName = "F:\\Work_Space\\JAVA DES\\Demo\\RSApubKey.txt";
-            String fileName1 = "F:\\Work_Space\\JAVA DES\\Demo\\RSApriKey.txt";//String类型密匙文件路
+            String fileName1 = "F:\\Work_Space\\JAVA DES\\Demo\\RSApriKey.txt";
             //得到私钥和公钥
             KeyPair keyPair = getRSAKey();
             RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-            FileOutputStream fos = new FileOutputStream(fileName,true);
+            //根据文件路径读取文件
+            FileOutputStream fos = new FileOutputStream(fileName, true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            FileOutputStream fos1 = new FileOutputStream(fileName1,true);
+            FileOutputStream fos1 = new FileOutputStream(fileName1, true);
             ObjectOutputStream oos1 = new ObjectOutputStream(fos1);
-
+            //将得到的密匙进行BASE64编码
             String pubKey = encryptBASE64(publicKey.getEncoded());
             String priKey = encryptBASE64(privateKey.getEncoded());
-
+            //公钥加密后的密文
+            String jiami = encryptData(pubKey, message, true);
+            oos.writeObject(pubKey + "\r\n");
+            oos1.writeObject(priKey + "\r\n");
+            oos.close();
+            oos1.close();
+            /* 测试
             System.out.println("公钥：" + pubKey);
             System.out.println("私钥：" + priKey);
 
-            String jiami = encryptData(pubKey, message, true);//公钥加密后的密文
-            oos.writeObject(" "+pubKey+"\r\n");
-            oos1.writeObject(" "+priKey+"\r\n");
-            oos.close();
-            oos1.close();
-            // 测试
-
             System.out.println("明文：" + message);
-            //String jiami = encryptData(pubKey, message, true);
             System.out.println("公钥加密后：" + jiami);
             String jiemi = decryptData(priKey, jiami, false);
             System.out.println("用私钥解密后的结果是:" + jiemi);
@@ -214,12 +218,12 @@ public class RSAUtils {
             System.out.println("私钥加密后：" + pjiami);
             String pjiemi = decryptData(pubKey, pjiami, true);
             System.out.println("用公钥解密后的结果是:" + pjiemi);
-
+             */
             return jiami;
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return null;
     }
-
 }

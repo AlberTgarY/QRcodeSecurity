@@ -10,6 +10,7 @@ import java.util.Base64;
 /**
  * 此class负责控制二维码生成以及验证,
  * 此Demo预先生成了三个二维码在文件夹Gen内，若想重新生成请删除二维码以及RSApriKey.txt /RSApubKey.txt /DesKey.txt内的所有内容.
+ * 2019-8-27 Albert
  */
 public class Verify {
 
@@ -154,7 +155,7 @@ public class Verify {
         else{
             System.out.println("----->您的产品是赝品.");
         }
-        
+
          */
 
 

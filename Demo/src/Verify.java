@@ -49,7 +49,7 @@ public class Verify {
              * 当前文件路径"F:\\Work_Space\\JAVA DES\\Gen"
              * 可以根据需要在QRCodeUtil.java内更改.
              */
-            String QRcodetext = QRcode.decode("313665803.jpg");
+            String QRcodetext = QRcode.decode("443319520.jpg");
             System.out.println("读取二维码信息成功！");
             String text = QRcodetext.substring(0,24);
             String codedKey = QRcodetext.substring(26);
@@ -154,8 +154,10 @@ public class Verify {
         else{
             System.out.println("----->您的产品是赝品.");
         }
-
+        
          */
+
+
 
 
     }

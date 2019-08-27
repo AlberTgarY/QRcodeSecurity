@@ -22,4 +22,10 @@ https://www.cnblogs.com/caizhaokai/p/10944667.html
 
 https://github.com/zxing/zxing/releases
 
+# 依赖jar包下载地址：
+链接：https://pan.baidu.com/s/1CvSoOx-Q42dhhZzXo_rNAw 
+
+提取码：nn3z 
+
+
 2019-8-27 Albert 16:44

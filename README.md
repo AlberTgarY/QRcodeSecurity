@@ -22,6 +22,8 @@ https://www.cnblogs.com/caizhaokai/p/10944667.html
 
 https://github.com/zxing/zxing/releases
 
+https://blog.csdn.net/xiaokui_wingfly/article/details/16338907
+
 # 依赖jar包下载地址：
 链接：https://pan.baidu.com/s/1CvSoOx-Q42dhhZzXo_rNAw 
 

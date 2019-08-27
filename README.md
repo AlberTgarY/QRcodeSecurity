@@ -11,6 +11,9 @@
 
 # 参考链接：
 https://blog.csdn.net/wangnan537/article/details/50353174
+
 https://www.cnblogs.com/gisblogs/p/5082344.html
+
 https://www.cnblogs.com/caizhaokai/p/10944667.html
+
 https://github.com/zxing/zxing/releases

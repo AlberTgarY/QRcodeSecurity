@@ -10,8 +10,10 @@ import javax.crypto.spec.DESKeySpec;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-
-
+/**
+ * 此class负责进行二维码DES加密
+ * 2019-8-28 Albert
+ */
 public class DESUtils {
     private static RSAUtils RSA = new RSAUtils();
     private SecretKey securekey;
@@ -139,6 +141,7 @@ public class DESUtils {
                 System.out.println("解密后：" + jiemi);
                 System.out.println("--------------------------------------------------------------");
                  */
+                //将des密匙使用rsa加密.
                 codedKey=RSA.main(key);
                 oos.writeObject(key+"\r\n");
                 oos.close();

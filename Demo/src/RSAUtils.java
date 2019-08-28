@@ -9,7 +9,10 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-
+/**
+ * 此class负责进行二维码RSA加密
+ * 2019-8-28 Albert
+ */
 public class RSAUtils {
 
     /**
@@ -201,6 +204,7 @@ public class RSAUtils {
             String priKey = encryptBASE64(privateKey.getEncoded());
             //公钥加密后的密文
             String jiami = encryptData(pubKey, message, true);
+            //将公钥/私钥写入文件
             oos.writeObject(pubKey + "\r\n");
             oos1.writeObject(priKey + "\r\n");
             oos.close();

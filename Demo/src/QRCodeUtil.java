@@ -26,8 +26,8 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 /**
- * 二维码工具类
- *
+ * 此class负责生成二维码： https://blog.csdn.net/wangnan537/article/details/50353174
+ * 2019-8-28 Albert
  */
 public class QRCodeUtil {
     private static final String CHARSET = "utf-8";

@@ -23,7 +23,7 @@ public class Crypt {
             /**
              * 请在此处修改您想要生成二维码的信息.
              */
-            String text = "生产编号99497638498178497789273148765438412321";
+            String text = "生产编号297182944981231691623293712765498712321";
             list = ceasar.main(text);//对明文进行重排列
             StringBuffer cipher = (StringBuffer) list[0];//密文
             int swift = (int) list[1];//偏移量

@@ -15,10 +15,9 @@ import java.util.Base64;
  * 2019-8-28 Albert
  */
 public class DESUtils {
-    private static RSAUtils RSA = new RSAUtils();
     private SecretKey securekey;
     private String key;
-    private String codedKey;
+    private String codedKey=null;
     /**
      * 对字符串进行BASE64Decoder
      *
@@ -114,8 +113,17 @@ public class DESUtils {
      * @throws Exception
      */
     public String[] get_encryname_key_pair(String name)throws Exception{
-        String[] list = {getEncryptString(name,key),codedKey};
-        return list;
+        if(codedKey==null){
+            String[] list = {getEncryptString(name,key),key};
+            return list;
+
+        }
+        else{
+            String[] list = {getEncryptString(name,key),codedKey};
+            return list;
+        }
+
+
     }
 
     /**
@@ -123,7 +131,7 @@ public class DESUtils {
      * @param
      * @return
      */
-    public void main() {
+    public void main(Boolean ifrsa) {
             try {
                //String类型密匙文件路径
                 String fileName = "F:\\Work_Space\\JAVA DES\\Demo\\DesKey.txt";
@@ -141,8 +149,11 @@ public class DESUtils {
                 System.out.println("解密后：" + jiemi);
                 System.out.println("--------------------------------------------------------------");
                  */
-                //将des密匙使用rsa加密.
-                codedKey=RSA.main(key);
+                //当用户选择YES时使用RSA加密DES密匙
+                if(ifrsa){
+                    RSAUtils RSA = new RSAUtils();
+                    codedKey=RSA.main(key);
+                }
                 oos.writeObject(key+"\r\n");
                 oos.close();
             } catch (Exception e) {

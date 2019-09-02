@@ -56,7 +56,7 @@ public class RSAUtils {
      * @param srcBytes
      * @return
      */
-    private static byte[] encrypt(Key key, byte[] srcBytes) {
+    public static byte[] encrypt(Key key, byte[] srcBytes) {
         if (key != null) {
             try {
                 //Cipher负责完成加密或解密工作，基于RSA
@@ -79,7 +79,7 @@ public class RSAUtils {
      * @param encBytes
      * @return
      */
-    private static byte[] decrypt(Key key, byte[] encBytes) {
+    public static byte[] decrypt(Key key, byte[] encBytes) {
         if (key != null) {
             try {
                 Cipher cipher = Cipher.getInstance("RSA");
@@ -143,7 +143,7 @@ public class RSAUtils {
      *
      * @return
      */
-    private static KeyPair getRSAKey() {
+    public static KeyPair getRSAKey() {
         KeyPair keyPair = null;
         try {
             //生成公钥和私钥对，基于RSA算法生成对象

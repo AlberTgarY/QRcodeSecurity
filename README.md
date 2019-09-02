@@ -25,9 +25,9 @@ https://github.com/zxing/zxing/releases
 https://blog.csdn.net/xiaokui_wingfly/article/details/16338907
 
 # 依赖jar包下载地址：
-链接：https://pan.baidu.com/s/1CvSoOx-Q42dhhZzXo_rNAw 
+链接：https://pan.baidu.com/s/1Yh_KBPTZJcINhmoGyA7zzA
 
-提取码：nn3z 
+提取码：119z
 
 密码：942694zyc
 

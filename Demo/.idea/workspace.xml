@@ -207,7 +207,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.RSAUtilsTest.getRSAKey">
+  <component name="RunManager" selected="Application.Verify">
     <configuration name="Crypt" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Crypt" />
       <module name="untitled" />
@@ -277,8 +277,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.RSAUtilsTest.getRSAKey" />
         <item itemvalue="Application.Verify" />
+        <item itemvalue="JUnit.RSAUtilsTest.getRSAKey" />
         <item itemvalue="JUnit.VerifyTest.main" />
         <item itemvalue="JUnit.VerifyTest.as" />
         <item itemvalue="JUnit.VerifyTest" />

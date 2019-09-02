@@ -166,9 +166,9 @@ public class Verify {
      */
     public static void main(String[] args)throws Exception{
         //生成二维码
-       //getQRcode();
+       getQRcode();
         //验证二维码
-
+        /*
         Boolean if_true = If_True("F:\\Work_Space\\JAVA DES\\Demo\\RSApriKey.txt","F:\\Work_Space\\JAVA DES\\Demo\\DesKey.txt");
         if(if_true){
             System.out.println("----->您的产品是正品.");
@@ -176,6 +176,8 @@ public class Verify {
         else{
             System.out.println("----->您的产品是赝品.");
         }
+
+         */
 
 
 

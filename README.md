@@ -1,11 +1,9 @@
 # QRcodeSecurity 二维码加密商品防伪（DEMO）：
-可选择使用DES加密或DES,RSA双重加密:
+可选择使用DES，RSA加密或DES,RSA双重加密(RSA加密DES密匙):
 
-1.使用DES加密，输入明文信息后对明文进行DES加密生成密文信息A.
-将A生成二维码储存在相应的文件夹内，DES密匙储存在对应的txt文件内方便验证时读取.
+您可以加密你想要保存的信息，也可以加密一段随机生成的序列号.
 
-2.使用DES,RSA双重加密，输入明文信息后对明文进行DES加密生成密文信息A,将DES密匙进行RSA加密生成RSA公钥密文信息B.
-将A和B生成二维码储存在相应的文件夹内，RSA公钥/私钥以及加密后的DES密匙储存在对应的txt文件内方便验证时读取(充当服务器).
+加密后的密匙分别被保存在DesKey.txt RSApriKey.txt RSApubKey.txt三个记事本中.
 
 # 验证时：
 若输入正确二维码信息，则解密成功，此二维码信息证实，产品为正品.
@@ -13,7 +11,6 @@
 若输入伪造二维码信息导致解密失败，则此二维码信息证伪，产品为赝品.
 
 使用时请检查文件路径是否正确并在Verify.java文件内进行操作.
-
 
 # 参考链接：
 https://blog.csdn.net/wangnan537/article/details/50353174
@@ -35,3 +32,4 @@ https://blog.csdn.net/xiaokui_wingfly/article/details/16338907
 
 2019-8-27  16:44 Prod By Albert
 2019-9-03  00:20 Edit By Albert
+2019-9-29  19:14 Edit By Albert

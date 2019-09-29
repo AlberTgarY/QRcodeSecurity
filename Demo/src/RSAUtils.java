@@ -3,6 +3,7 @@ import org.springframework.util.StringUtils;
 import javax.crypto.Cipher;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import javax.crypto.NoSuchPaddingException;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -60,7 +61,7 @@ public class RSAUtils {
         if (key != null) {
             try {
                 //Cipher负责完成加密或解密工作，基于RSA
-                Cipher cipher = Cipher.getInstance("RSA");
+                Cipher cipher = getCipher();
                 //对Cipher对象进行初始化
                 cipher.init(Cipher.ENCRYPT_MODE, key);
                 //加密，并返回
@@ -74,7 +75,6 @@ public class RSAUtils {
 
     /**
      * 解密
-     *
      * @param key
      * @param encBytes
      * @return
@@ -82,7 +82,7 @@ public class RSAUtils {
     public static byte[] decrypt(Key key, byte[] encBytes) {
         if (key != null) {
             try {
-                Cipher cipher = Cipher.getInstance("RSA");
+                Cipher cipher = getCipher();
                 //对Cipher对象进行初始化
                 cipher.init(Cipher.DECRYPT_MODE, key);
                 //解密并返回结果
@@ -93,7 +93,11 @@ public class RSAUtils {
         }
         return null;
     }
-
+    public static synchronized Cipher getCipher()
+            throws NoSuchAlgorithmException, NoSuchPaddingException {
+            Cipher cipher = Cipher.getInstance("RSA");
+        return cipher;
+    }
     /**
      * 根据key获取公有或者私有key对象
      *

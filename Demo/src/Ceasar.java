@@ -1,21 +1,18 @@
-
 import java.util.Random;
     /**
      * 凯撒加密器： https://blog.csdn.net/xiaokui_wingfly/article/details/16338907
      * @author 小奎
      */
     public class Ceasar {
-        int key;
-        static StringBuffer plaintextStr = new StringBuffer("");
-        static StringBuffer ciphertextStr = new StringBuffer("");
-        final int max = 1024; // 最大字符
+        private  int key;
+        private final int max = 1024; // 最大字符
 
         public Object[] main(String text) {
-            Ceasar m = new Ceasar();
-            key=m.setKey();
-            m.encryption(text);
+            StringBuffer ciphertextStr;
+            Ceasar c = new Ceasar();
+            key=c.setKey();
+            ciphertextStr=c.encryption(text);
             //m.deciphering(ciphertextStr.toString(),-1);
-            m.display();
             Object[] list = {ciphertextStr,key};
             return list;
         }
@@ -25,17 +22,18 @@ import java.util.Random;
          *
          * @return
          */
-        int setKey() {
+       private int setKey() {
             Random r = new Random();
             key = r.nextInt(900)+100;
             return key;
         }
         /**
-         * 加密
+         * Encrypting
          * @param plain 明文
          * @return
          */
-        void encryption(String plain) {
+        StringBuffer encryption(String plain) {
+            StringBuffer ciphertextStr = new StringBuffer("");
             char[] plaintext = plain.toCharArray();
             char[] ciphertext = new char[max];
             for (int j = 0; j < max; j++) {
@@ -50,14 +48,16 @@ import java.util.Random;
                     break;
                 }
             }
+            return ciphertextStr;
         }
 
         /**
-         * 解密
+         * Decrypting
          * @param cipher,swift 密文，偏移量
          * @return StringBuffer
          */
         StringBuffer deciphering(String cipher,int swift) {
+            StringBuffer plaintextStr = new StringBuffer("");
             if(swift==-1){
                 swift =key;
             }
@@ -74,14 +74,6 @@ import java.util.Random;
                 }
             }
             return plaintextStr;
-        }
-
-        /**
-         * 显示对比结果
-         */
-        void display() {
-            System.out.println("重排列成功！");
-            System.out.println("密文：" + ciphertextStr);
         }
 
 

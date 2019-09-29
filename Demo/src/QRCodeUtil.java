@@ -10,9 +10,7 @@ import java.io.File;
 import java.io.OutputStream;
 import java.util.Hashtable;
 import java.util.Random;
-
 import javax.imageio.ImageIO;
-
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
@@ -291,7 +289,7 @@ public class QRCodeUtil {
         //含Logo，不指定二维码图片名
         //QRCodeUtil.encode(text, "e:\\csdn.jpg", "e:\\", true);
         //含Logo，指定二维码图片
-        return QRCodeUtil.encode(text, "F:\\Work_Space\\JAVA DES\\material\\mitsuha.jpg", "F:\\Work_Space\\JAVA DES\\Gen", needCompress);
+        return QRCodeUtil.encode(text, "F:\\Work_Space\\JAVA DES\\material\\kcl.jpg", "F:\\Work_Space\\JAVA DES\\Gen", needCompress);
     }
 }
 

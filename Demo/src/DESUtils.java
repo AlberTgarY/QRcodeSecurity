@@ -89,7 +89,6 @@ public class DESUtils {
         return encryptBASE64(encryptStrBytes);
     }
 
-
     /**
      * 对BASE64加密字符串进行解密
      * @param str
@@ -116,19 +115,16 @@ public class DESUtils {
         if(codedKey==null){
             String[] list = {getEncryptString(name,key),key};
             return list;
-
         }
         else{
             String[] list = {getEncryptString(name,key),codedKey};
             return list;
         }
-
-
     }
-
     /**
      * main()是DESUtils的主要单元，负责加密DES密匙，生成DES密匙，并写入相应的txt文件内方便验证时提取。
-     * @param
+     *
+     * @param ifrsa true时使用RSA加密DES密匙 false时仅用DES加密.
      * @return
      */
     public void main(Boolean ifrsa) {
@@ -160,5 +156,4 @@ public class DESUtils {
                 e.printStackTrace();
             }
     }
-
 }

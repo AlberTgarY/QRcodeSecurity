@@ -1,11 +1,10 @@
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import javax.crypto.BadPaddingException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Scanner;
 /**
  * 此class负责控制二维码生成以及验证,
@@ -18,23 +17,29 @@ public class Verify {
     public static RSAUtils RSA = new RSAUtils();
     public static Ceasar ceasar = new Ceasar();
     /**
-     * 生成一个二维码
-     * @return
+     * 生成num个二维码
+     * @param  num numbers of QRcode generated.
+     * @return void
      */
-    public static void getQRcode()throws Exception{
-        Crypt crypt =new Crypt();
-        crypt.main();
+    public static void getQRcode(int num)throws Exception{
+        if(num>0) {
+            for (int i = 0; i < num; i++) {
+                Crypt crypt = new Crypt();
+                crypt.main();
+            }
+        }
     }
     /**
      * 判断当前选中二维码是否符合防伪标准
      * 当前使用记事本充当服务器.
      * Keyfilename:储存RSA私钥(服务器端)
      * Textfilename:储存加密后的DES密匙(服务器端)
-     * @param Keyfilename,Textfilename
+     * @param Keyfilename 私钥文件路径
+     * @param Textfilename  密匙文件路径
+     * @param filename 解密二维码文件名
      * @return boolean
      */
-    public static boolean If_True(String Keyfilename,String Textfilename)throws Exception{
-
+    public static boolean If_True(String Keyfilename,String Textfilename,String filename)throws Exception{
         //初始化两个bufferedReader
             BufferedReader br = getBufferReader(Keyfilename);
             BufferedReader br1 = getBufferReader(Textfilename);
@@ -43,14 +48,8 @@ public class Verify {
             String deskey = null;
         //对密文（DES密匙）进行RSA解密
         try {
-
             QRCodeUtil QRcode = new QRCodeUtil();
-            /**
-             * 请在此处添加您想要验证的QRcode文件名.N
-             * 当前文件路径"F:\\Work_Space\\JAVA DES\\Gen"
-             * 可以根据需要在QRCodeUtil.java内更改.
-             */
-            String QRcodetext = QRcode.decode("718978507.jpg");
+            String QRcodetext = QRcode.decode(filename);
             System.out.println("读取二维码信息成功！");
             int num=0;
             int i=0;
@@ -63,23 +62,46 @@ public class Verify {
             System.out.println("加密原文text:  "+text);
             System.out.println("加密内容key:   "+codedKey);
             System.out.println("-------------------------------------------------------------------------");
-            System.out.println("二维码密匙是否经过RSA加密？若是请输入Yes,若不是请输入任意字符跳过...");
+            System.out.println("是否使用DES加密并且使用RSA加密DES密匙？若是请输入Yes,若不是请输入任意字符跳过...");
             Scanner scan = new Scanner(System.in);
             if(scan.nextLine().equalsIgnoreCase("YES")){
-                System.out.println("-------------------------------开始进行RSA解密----------------------------");
+                System.out.println("----------------------正在使用RSA解密二维码密匙----------------------------");
                 while ((nextline = br.readLine()) != null) {
                     if (RSAdecrypt(nextline.substring(7), codedKey)) {
                         deskey = RSA.decryptData(nextline.substring(7), codedKey, false);//相当于服务器
                         System.out.println("----->解密成功！  密匙为:  " + deskey);
-                        num=0;
+                        num=-1;
                         System.out.println("-------------------------------------------------------------------------");
                         break;
                     } else { num+=1;System.out.println("----->解密失败！使用记事本中第"+num+"个密匙"); }
                 }
-                return false;
             }
-            else{ deskey=codedKey;}
-            System.out.println("-------------------------------开始进行DES解密----------------------------");
+            else{
+                System.out.println("是否由DES加密二维码？若是请输入Yes,若由RSA加密请输入任意字符跳过...");
+                Scanner scan1 = new Scanner(System.in);
+                if(scan1.nextLine().equalsIgnoreCase("YES")){
+                     deskey=codedKey;
+                }
+                else{
+                    System.out.println("------------------------------正在使用RSA解密----------------------------");
+                    num=0;
+                    codedKey = QRcodetext.substring(0,i);
+                    while ((nextline = br.readLine()) != null) {
+                        if (RSAdecrypt(nextline.substring(7), codedKey)) {
+                            deskey = RSA.decryptData(nextline.substring(7), codedKey, false);//相当于服务器
+                            System.out.println("----->解密成功！  明文为:  " + deskey);
+                            String ciphertext = deskey.substring(0,deskey.length()-3);
+                            String swift = deskey.substring(deskey.length()-3);
+                            StringBuffer jiemi = ceasar.deciphering(ciphertext,Integer.parseInt(swift));
+                            System.out.println("----->重排列成功！原文为:  " + jiemi.toString());
+                            System.out.println("-------------------------------------------------------------------------");
+                            return true;
+                        } else { num+=1;System.out.println("----->解密失败！使用记事本中第"+num+"个密匙"); }
+                    }
+
+                }
+            }
+            System.out.println("-------------------------------正在匹配DES密匙----------------------------");
             //若密匙成功解密，则使用此密匙对加密密文进行DES解密.
            while ((nextline1=br1.readLine())!=null){
                 if(deskey.equals(nextline1.substring(7))){
@@ -95,17 +117,16 @@ public class Verify {
                     System.out.println("-------------------------------------------------------------------------");
                     return true;
                 }
-                else { num+=1;System.out.println("----->解密失败！使用记事本中第"+num+"个密匙"); }
+                else { num+=1;System.out.println("----->匹配失败！使用记事本中第"+num+"个密匙"); }
             }
         }
         catch(IOException e){
             System.out.println("文件路径错误!");
         }
         catch(NullPointerException e){
-            System.out.println("NullPointerException!");
+            System.out.println("NullPointerException");
         }
         return false;
-
     }
 
     /**
@@ -141,7 +162,6 @@ public class Verify {
             return false;
         }
     }
-
     /**
      * 生成BufferReader,读取当前文件.
      * @param filename
@@ -149,43 +169,47 @@ public class Verify {
      * @throws Exception
      */
     public static BufferedReader getBufferReader(String filename)throws Exception{
-        FileInputStream fis = null; // 创建FileInputStream类对象读取File
-        InputStreamReader isr = null; // 创建InputStreamReader对象接收文件流
-        BufferedReader br = null;
+        FileInputStream fis; // 创建FileInputStream类对象读取File
+        InputStreamReader isr; // 创建InputStreamReader对象接收文件流
+        BufferedReader br;
         fis = new FileInputStream(filename);
         isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
         br = new BufferedReader(isr);
         return br;
     }
-
     /**
-     * 如要生成二维码，请注释掉//验证二维码后的部分.
-     * 如需验证二维码，请注释掉//生成二维码后的部分，并在If_true函数内修改二维码文件名.
-     * @param args
+     * 判断产品真伪
+     * @param keyfilename,Textfilename,filename
+     * @return void
      * @throws Exception
      */
-    public static void main(String[] args)throws Exception{
-        //生成二维码
-       getQRcode();
-        //验证二维码
-        /*
-        Boolean if_true = If_True("F:\\Work_Space\\JAVA DES\\Demo\\RSApriKey.txt","F:\\Work_Space\\JAVA DES\\Demo\\DesKey.txt");
+
+    private static void verify(String keyfilename,String Textfilename,String filename)throws Exception{
+
+        Boolean if_true = If_True(keyfilename,Textfilename,filename);
         if(if_true){
             System.out.println("----->您的产品是正品.");
         }
         else{
             System.out.println("----->您的产品是赝品.");
         }
-
+    }
+    /**
+     * 如要生成二维码，请注释掉//验证二维码后的部分.
+     * 如需验证二维码，请注释掉//生成二维码后的部分，并在第三个parameter内修改二维码文件名.
+     * @param args
+     * @throws Exception
+     */
+    public static void main(String[] args)throws Exception{
+        //生成二维码
+        //getQRcode(1);
+        //验证二维码
+        /**
+         * **************************************************************************************************************************
+         * 请在此处添加您想要验证的QRcode文件名.
+         * 当前生成二维码后存放文件路径为"F:\\Work_Space\\JAVA DES\\Gen",可以根据需要在QRCodeUtil.java内更改.
+         * **************************************************************************************************************************
          */
-
-
-
-
-
-
-
-
-
+        verify("F:\\Work_Space\\JAVA DES\\Demo\\RSApriKey.txt","F:\\Work_Space\\JAVA DES\\Demo\\DesKey.txt","398411002.jpg");
     }
 }

@@ -127,15 +127,24 @@ public class DESUtils {
      * @param ifrsa true时使用RSA加密DES密匙 false时仅用DES加密.
      * @return
      */
+    /**
+     * main() is the main unit of DESUtils, responsible for encrypting the DES key, generating the DES key, and writing to the corresponding TXT file for easy extraction when verification.
+     *
+     * @param ifrsa true use RSA to encrypt DES key false use DES encryption only.
+     * @ return
+     */
     public void main(Boolean ifrsa) {
             try {
-               //String类型密匙文件路径
+                //String类型密匙文件路径
+                //String type key file path
                 String fileName = "F:\\Work_Space\\JAVA DES\\Demo\\DesKey.txt";
                 //根据文件路径读取文件
+                //Read the file according to the file path
                 FileOutputStream fos = new FileOutputStream(fileName,true);
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                 // 生成密钥
-                key = getKey();//用于DES加密的原密匙
+                // Generate the key
+                key = getKey();//用于DES加密的原密匙 The origin Key used for DES encryption
                 /*测试
                 String jiami = getEncryptString("Hello World!",key);
                 String jiami1 = getEncryptString("Hello World!",securekey);

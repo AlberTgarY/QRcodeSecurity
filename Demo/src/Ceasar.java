@@ -1,6 +1,6 @@
 import java.util.Random;
     /**
-     * 凯撒加密器： https://blog.csdn.net/xiaokui_wingfly/article/details/16338907
+     * Ceasar Encryption： https://blog.csdn.net/xiaokui_wingfly/article/details/16338907
      * @author 小奎
      */
     public class Ceasar {

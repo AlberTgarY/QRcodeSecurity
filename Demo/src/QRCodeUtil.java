@@ -284,11 +284,13 @@ public class QRCodeUtil {
      */
 
     public String main(String text,boolean needCompress) throws Exception {
-        //不含Logo
+        //No Logo
         //QRCodeUtil.encode(text, null, "e:\\", true);
-        //含Logo，不指定二维码图片名
+
+        //With Logo，not define the name of the QRcode file.
         //QRCodeUtil.encode(text, "e:\\csdn.jpg", "e:\\", true);
-        //含Logo，指定二维码图片
+
+        //With Logo，define the name of the QRcode file.
         return QRCodeUtil.encode(text, "F:\\Work_Space\\JAVA DES\\material\\kcl.jpg", "F:\\Work_Space\\JAVA DES\\Gen", needCompress);
     }
 }

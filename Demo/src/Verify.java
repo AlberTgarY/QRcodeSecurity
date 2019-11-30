@@ -226,8 +226,8 @@ public class Verify {
      * @throws Exception
      */
     /**
-    * to generate the qr code, please comment out // verify the part after the qr code.
-    * to verify the qr code, please comment out the part after // generating the qr code, and modify the name of the qr code in the third parameter.
+    * to generate the qr code, please comment out Verify()
+    * to verify the qr code, please comment out getQRcode() , and modify the file name of the qr code in the third parameter in Verify().
     * @ param args
     * @ throws the Exception
     */

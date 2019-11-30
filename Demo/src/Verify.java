@@ -117,7 +117,7 @@ public class Verify {
                             String ciphertext = deskey.substring(0,deskey.length()-3);
                             String swift = deskey.substring(deskey.length()-3);
                             StringBuffer jiemi = ceasar.deciphering(ciphertext,Integer.parseInt(swift));
-                            System.out.println("----->Relining Success！The plainText:  " + jiemi.toString());
+                            System.out.println("----->Rearranging Success！The plainText:  " + jiemi.toString());
                             System.out.println("-------------------------------------------------------------------------");
                             return true;
                         } else { num+=1;System.out.println("----->Encryption failed！Using key No."+num+" in the text file."); }

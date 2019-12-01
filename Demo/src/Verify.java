@@ -235,7 +235,7 @@ public class Verify {
     */
     public static void main(String[] args)throws Exception{
         //Generate QRcode
-        //getQRcode(1);
+       // getQRcode(1);
         //Verify QRcode
         /**
          * **************************************************************************************************************************
@@ -251,7 +251,7 @@ public class Verify {
          * */
         File directory = new File(".");
         String path = directory.getCanonicalPath();
-        //verify(path+"\\Demo\\RSApriKey.txt",path+"\\Demo\\DesKey.txt","91171272.jpg");
-        verify(path+"\\Demo\\RSApriKey.txt",path+"\\Demo\\DesKey.txt","492635395.jpg");
+        verify(path+"\\Demo\\RSApriKey.txt",path+"\\Demo\\DesKey.txt","267316570.jpg");
+
     }
 }

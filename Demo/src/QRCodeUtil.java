@@ -272,7 +272,9 @@ public class QRCodeUtil {
      * @throws Exception
      */
     public String decode(String filename) throws Exception {
-        return QRCodeUtil.decode(new File("F:\\Work_Space\\JAVA DES\\Gen\\"+filename));
+        File directory = new File(".");
+        String path = directory.getCanonicalPath();
+        return QRCodeUtil.decode(new File(path+"\\Gen\\"+filename));
     }
 
     /**
@@ -291,7 +293,9 @@ public class QRCodeUtil {
         //QRCodeUtil.encode(text, "e:\\csdn.jpg", "e:\\", true);
 
         //With Logo，define the name of the QRcode file.
-        return QRCodeUtil.encode(text, "F:\\Work_Space\\JAVA DES\\material\\kcl.jpg", "F:\\Work_Space\\JAVA DES\\Gen", needCompress);
+        File directory = new File(".");
+        String path = directory.getCanonicalPath();
+        return QRCodeUtil.encode(text, path+"\\material\\kcl.jpg", path+"\\Gen", needCompress);
     }
 }
 

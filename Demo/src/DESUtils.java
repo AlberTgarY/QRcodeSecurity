@@ -137,7 +137,9 @@ public class DESUtils {
             try {
                 //String类型密匙文件路径
                 //String type key file path
-                String fileName = "F:\\Work_Space\\JAVA DES\\Demo\\DesKey.txt";
+                File directory = new File(".");
+                String path = directory.getCanonicalPath();
+                String fileName = path+"\\Demo\\DesKey.txt";
                 //根据文件路径读取文件
                 //Read the file according to the file path
                 FileOutputStream fos = new FileOutputStream(fileName,true);

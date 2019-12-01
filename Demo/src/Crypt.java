@@ -6,6 +6,7 @@ public class Crypt {
     private RSAUtils RSA = new RSAUtils();
     private QRCodeUtil QRCode = new QRCodeUtil();
     private Ceasar ceasar = new Ceasar();
+    public String text;
     /**
      * 此class负责进行二维码加密及输出,
      * 2019-8-28 Albert
@@ -15,7 +16,7 @@ public class Crypt {
      * 2019-8-28 Albert
      */
     public Crypt() {
-
+        text = "Albert";
         //System.out.println("是否使用DES加密二维码并且使用RSA加密DES密匙？ 若需要请输入Yes,若仅使用DES或RSA加密二维码请输入任意字符跳过...");
         System.out.println("Use DES and RSA to encrypt? If so please type yes. If only use either DES or RSA encrpting, type anything to skip...");
         Scanner Scan = new Scanner(System.in);
@@ -56,13 +57,12 @@ public class Crypt {
                  * Please modify the text that is going to be generated to QR code.
                  */
                 Object[] list;
-                String text = "Serialnumber:";
                 /**
                  * comment text = generateStr(text, 9); if you dont want to generate random serial numbers.
                  */
                 //生成random serial number
                 //generate random serial number
-                text = generateStr(text, 9);
+                //text = generateStr(text, 9);
                 //对明文进行重排列
                 //rearranging the plain text
                 list = ceasar.main(text);
@@ -105,10 +105,9 @@ public class Crypt {
                  * Please modify the text that is going to be encrpted
                  */
                 Object[] list;
-                String text = "Serialnumber:";
-                text = generateStr(text, 9);
+                //text = generateStr(text, 9);
                 //对明文进行重排列
-                //rearranging 
+                //rearranging
                 list = ceasar.main(text);
                 //密文
                 //Encrypting text

@@ -1,6 +1,7 @@
 
 import org.springframework.util.StringUtils;
 import javax.crypto.Cipher;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import javax.crypto.NoSuchPaddingException;
@@ -191,9 +192,11 @@ public class RSAUtils {
      */
     public String  main(String message) {
         try {
+            File directory = new File(".");
+            String path = directory.getCanonicalPath();
             //String类型密匙文件路径
-            String fileName = "F:\\Work_Space\\JAVA DES\\Demo\\RSApubKey.txt";
-            String fileName1 = "F:\\Work_Space\\JAVA DES\\Demo\\RSApriKey.txt";
+            String fileName = path+"\\Demo\\RSApubKey.txt";
+            String fileName1 = path+"\\Demo\\RSApriKey.txt";
             //得到私钥和公钥
             KeyPair keyPair = getRSAKey();
             RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+import java.io.File;
+
 /**
  * 此class负责控制二维码生成以及验证,
  * 此Demo预先生成了若干二维码在文件夹Gen内，若想重新生成请删除二维码以及RSApriKey.txt /RSApubKey.txt /DesKey.txt内的所有内容.
@@ -233,7 +235,7 @@ public class Verify {
     */
     public static void main(String[] args)throws Exception{
         //Generate QRcode
-       // getQRcode(1);
+        //getQRcode(1);
         //Verify QRcode
         /**
          * **************************************************************************************************************************
@@ -247,8 +249,9 @@ public class Verify {
          * the current path to store the file after generating the qr code is "F:\ Work_Space\\JAVA DES\\Gen", which can be changed in qrcodeutil.java as required.
          * ***************************************************************************************************************************
          * */
-
-
-       verify("F:\\Work_Space\\JAVA DES\\Demo\\RSApriKey.txt","F:\\Work_Space\\JAVA DES\\Demo\\DesKey.txt","27278097.jpg");
+        File directory = new File(".");
+        String path = directory.getCanonicalPath();
+        //verify(path+"\\Demo\\RSApriKey.txt",path+"\\Demo\\DesKey.txt","91171272.jpg");
+        verify(path+"\\Demo\\RSApriKey.txt",path+"\\Demo\\DesKey.txt","492635395.jpg");
     }
 }
